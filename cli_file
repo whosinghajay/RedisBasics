@@ -1,0 +1,200 @@
+Microsoft Windows [Version 10.0.19045.4842]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Dutech-PC-4>docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+Unable to find image 'redis/redis-stack:latest' locally
+latest: Pulling from redis/redis-stack
+3713021b0277: Pull complete
+a2b526909d65: Pull complete
+4f4fb700ef54: Pull complete
+aa2c9022290e: Pull complete
+4c5f7b7c0156: Pull complete
+c0027529411a: Pull complete
+fe8e9b7efe92: Pull complete
+220057df27e5: Pull complete
+d62555126992: Pull complete
+2da25929cf0e: Pull complete
+06b134b04a8e: Pull complete
+45631312cb2e: Pull complete
+d2e6ba4a0450: Pull complete
+996fd60091c6: Pull complete
+20532e70b8b0: Pull complete
+Digest: sha256:ee18d7ce6f3e9e9ddc315d8cb4e2db11e76bc89f52a35405aa5dac330421d98f
+Status: Downloaded newer image for redis/redis-stack:latest
+383d6c2f6c05d6520185e347c18ad3c9d35da6474bbffb2e07c9abf5ff3b3e08
+
+C:\Users\Dutech-PC-4>docker ps
+CONTAINER ID   IMAGE                      COMMAND            CREATED         STATUS         PORTS                                            NAMES
+383d6c2f6c05   redis/redis-stack:latest   "/entrypoint.sh"   2 minutes ago   Up 2 minutes   0.0.0.0:6379->6379/tcp, 0.0.0.0:8001->8001/tcp   redis-stack
+
+C:\Users\Dutech-PC-4>docker exec -it 383d6c2f6c05 bash
+root@383d6c2f6c05:/# redis-cli ping
+PONG
+root@383d6c2f6c05:/# redis-cli
+127.0.0.1:6379> ping
+PONG
+127.0.0.1:6379> pong
+(error) ERR unknown command 'pong', with args beginning with:
+127.0.0.1:6379> ping
+PONG
+127.0.0.1:6379> poing
+(error) ERR unknown command 'poing', with args beginning with:
+127.0.0.1:6379> ping
+PONG
+127.0.0.1:6379> set name AJAY
+OK
+127.0.0.1:6379> get name
+"AJAY"
+127.0.0.1:6379> set name SINGH
+OK
+127.0.0.1:6379> get name
+"SINGH"
+127.0.0.1:6379> get firstname AJAY
+(error) ERR wrong number of arguments for 'get' command
+127.0.0.1:6379> set FirstName AJAY
+OK
+127.0.0.1:6379> set LastName SINGH
+OK
+127.0.0.1:6379> get LastName
+"SINGH"
+127.0.0.1:6379> get FirstName
+"AJAY"
+127.0.0.1:6379> get name
+(nil)
+127.0.0.1:6379> get FirstName
+"AJAY"
+127.0.0.1:6379> get LastName
+"SINGH"
+127.0.0.1:6379> set user:1 ajay
+OK
+127.0.0.1:6379> set user:2 akash
+OK
+127.0.0.1:6379> set user:3 viral
+OK
+127.0.0.1:6379> set message:1 hey
+OK
+127.0.0.1:6379> set message:2 hello
+OK
+127.0.0.1:6379> set message:2 helllllo nx
+(nil)
+127.0.0.1:6379> set message:3 how are you
+(error) ERR syntax error
+127.0.0.1:6379> set message:3 how_are_you
+OK
+127.0.0.1:6379> get message:2
+"hello"
+127.0.0.1:6379> get message:3
+"how_are_you"
+127.0.0.1:6379> mget user:1 user:2 message:1 message:2
+1) "ajay"
+2) "akash"
+3) "hey"
+4) "hello"
+127.0.0.1:6379> set count 0
+OK
+127.0.0.1:6379> incr count
+(integer) 1
+127.0.0.1:6379> incrby count 10
+(integer) 11
+127.0.0.1:6379> incr count
+(integer) 12
+127.0.0.1:6379> lpush message hey
+(integer) 1
+127.0.0.1:6379> lpush message heyHello
+(integer) 2
+127.0.0.1:6379> rpush message heyThere
+(integer) 3
+127.0.0.1:6379> rpop message
+"heyThere"
+127.0.0.1:6379> lpop message
+"heyHello"
+127.0.0.1:6379> llen message
+(integer) 1
+127.0.0.1:6379> lpush message heyHero
+(integer) 2
+127.0.0.1:6379> r push message heyThere
+(error) ERR unknown command 'r', with args beginning with: 'push' 'message' 'heyThere'
+127.0.0.1:6379> rpush message heyThere
+(integer) 3
+127.0.0.1:6379> llen message
+(integer) 3
+127.0.0.1:6379> lrange messages 0 -1
+1) "You"
+2) "How're"
+3) "There"
+4) "Hey"
+5) "Hey"
+6) "There"
+127.0.0.1:6379> sadd ip 1
+(integer) 1
+127.0.0.1:6379> sadd ip 2
+(integer) 1
+127.0.0.1:6379> sadd ip 2
+(integer) 0
+127.0.0.1:6379> sadd ip 4
+(integer) 1
+127.0.0.1:6379> sadd ip 8
+(integer) 1
+127.0.0.1:6379> srem ip 3
+(integer) 0
+127.0.0.1:6379> srem ip 8
+(integer) 1
+127.0.0.1:6379> sismember 8
+(error) ERR wrong number of arguments for 'sismember' command
+127.0.0.1:6379> sismember 4
+(error) ERR wrong number of arguments for 'sismember' command
+127.0.0.1:6379> sismember ip 4
+(integer) 1
+127.0.0.1:6379> sismember ip 8
+(integer) 0
+127.0.0.1:6379> hset bike:1 model Deimos brand Ergonom type 'Enduro bikes' price 4972
+(integer) 4
+127.0.0.1:6379> hget bike:1 model
+"Deimos"
+127.0.0.1:6379> hget bike:1 type
+"Enduro bikes"
+127.0.0.1:6379> zadd score 10 ajay
+(integer) 1
+127.0.0.1:6379> zadd score 1 akash
+(integer) 1
+127.0.0.1:6379> zadd score 3 viral
+(integer) 1
+127.0.0.1:6379> zreverse score
+(error) ERR unknown command 'zreverse', with args beginning with: 'score'
+127.0.0.1:6379> zreverse score 0 -1
+(error) ERR unknown command 'zreverse', with args beginning with: 'score' '0' '-1'
+127.0.0.1:6379> zrange score 0 -1
+1) "akash"
+2) "viral"
+3) "ajay"
+127.0.0.1:6379> zreverse score
+(error) ERR unknown command 'zreverse', with args beginning with: 'score'
+127.0.0.1:6379> zrevrange score 0 -1
+1) "ajay"
+2) "viral"
+3) "akash"
+127.0.0.1:6379> zrank score ajay
+(integer) 2
+127.0.0.1:6379> zrank score akash
+(integer) 0
+127.0.0.1:6379> zrank score viral
+(integer) 1
+127.0.0.1:6379> SUBSCRIBE notifications
+1) "subscribe"
+2) "notifications"
+3) (integer) 1
+127.0.0.1:6379(subscribed mode)> Hey
+(error) ERR unknown command 'Hey', with args beginning with:
+127.0.0.1:6379(subscribed mode)> Hey HEy HEy ehyeh
+127.0.0.1:6379> SUBSCRIBE notifications
+1) "subscribe"
+2) "notifications"
+3) (integer) 1
+1) "message"
+2) "notifications"
+3) "heyjj"
+1) "message"
+2) "notifications"
+3) "hey"
+127.0.0.1:6379(subscribed mode)>
+127.0.0.1:6379>

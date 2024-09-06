@@ -1,4 +1,4 @@
-const client = require("./client");
+const client = require("./client.js");
 
 async function init() {
   const result = await client.get("message:3");
@@ -13,3 +13,8 @@ async function init2() {
 }
 
 init2();
+
+async function init3() {
+  await client.expire("message:4", 10);
+}
+init3();
